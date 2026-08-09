@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Contact Mapping | Velora</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">V</span><span>Contact Mapping</span></div>
+    <div class="top-actions">
+      <span id="sourceStatus" class="source-status" aria-live="polite">No file loaded</span>
+      <button id="resetBtn" class="icon-button" type="button" title="Clear loaded data" aria-label="Clear loaded data">&#8635;</button>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="import-panel" aria-labelledby="importTitle">
+      <div>
+        <p class="eyebrow">Local review workspace</p>
+        <h1 id="importTitle">Inspect mapped contacts without uploading them.</h1>
+        <p class="subcopy">Load the generated workbook, a mapping CSV, or a JSON export. The file is read in this browser tab and never sent to a server.</p>
+      </div>
+      <label class="file-picker" for="fileInput">
+        <span class="file-icon" aria-hidden="true">&#8615;</span>
+        <span><strong>Open mapping file</strong><small>.xlsx, .xls, .csv, or .json</small></span>
+        <input id="fileInput" type="file" accept=".xlsx,.xls,.csv,.json,text/csv,application/json,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" multiple>
+      </label>
+    </section>
+
+    <section id="emptyState" class="empty-state" aria-live="polite">
+      <div class="empty-icon" aria-hidden="true">&#9638;</div>
+      <h2>Choose the contact mapping workbook</h2>
+      <p>The recommended file is <code>whatsapp_contact_mapping.xlsx</code>.</p>
+    </section>
+
+    <section id="workspace" class="workspace hidden" aria-label="Contact mapping data">
+      <div class="kpi-grid">
+        <article class="kpi"><span>Total rows</span><strong id="kpiTotal">0</strong><small>Loaded mapping rows</small></article>
+        <article class="kpi"><span>Saved contacts</span><strong id="kpiSaved">0</strong><small>Rows with CSV metadata</small></article>
+        <article class="kpi"><span>Video seen</span><strong id="kpiVideo">0</strong><small>At least one OCR sighting</small></article>
+        <article class="kpi"><span>Needs review</span><strong id="kpiReview">0</strong><small>Rows with an explicit review flag</small></article>
+        <article class="kpi"><span>International</span><strong id="kpiInternational">0</strong><small>Non-India or saved-name tag</small></article>
+      </div>
+
+      <div class="toolbar">
+        <label class="search-box"><span aria-hidden="true">&#128269;</span><input id="searchInput" type="search" placeholder="Search phone, name, city, role..." autocomplete="off"></label>
+        <label class="select-wrap"><span>Category</span><select id="categoryFilter"><option value="">All</option></select></label>
+        <label class="select-wrap"><span>City</span><select id="cityFilter"><option value="">All</option></select></label>
+        <label class="check-wrap"><input id="reviewOnly" type="checkbox"><span>Review only</span></label>
+        <label class="check-wrap"><input id="videoOnly" type="checkbox"><span>Video seen</span></label>
+        <button id="exportBtn" class="secondary-button" type="button" title="Download the filtered rows as CSV">Export CSV</button>
+      </div>
+
+      <div class="table-layout">
+        <section class="table-panel" aria-label="Contact rows">
+          <div class="table-meta"><span id="resultCount">0 rows</span><span id="pageLabel">Page 1</span></div>
+          <div class="table-scroll">
+            <table>
+              <thead><tr>
+                <th>Phone</th><th>Saved name</th><th>City</th><th>Gender</th><th>Type</th><th>Video</th><th>Review</th>
+              </tr></thead>
+              <tbody id="rowsBody"></tbody>
+            </table>
+          </div>
+          <div class="pager"><button id="prevBtn" class="secondary-button" type="button">Previous</button><button id="nextBtn" class="secondary-button" type="button">Next</button></div>
+        </section>
+        <aside id="detailPanel" class="detail-panel" aria-label="Selected contact" aria-live="polite">
+          <div class="detail-empty">Select a row to inspect its evidence.</div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" crossorigin="anonymous"></script>
+  <script src="app.js"></script>
+</body>
+</html>
